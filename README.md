@@ -122,4 +122,4 @@ Apache 2.0 — freedom for both academia and commercial innovation.
 ## 📥 Archived Versions
 
 - **ΞSort v1.0** (`xisorter.py`) — archived on **17.05.2025**  
-[🔗 Arweave Permanent Link](https://gxw4ttcto2ydbtckbqmz7sz4aay6x4sbauztbo5arrgs2fxgynlq.arweave.net)
+[🔗 Arweave Permanent Link](https://arweave.net/Ne3JzFN2sDDMSgwZn8s8ADHr8kEFMzC7oIxNLRbmw1c)
