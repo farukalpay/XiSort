@@ -1,111 +1,92 @@
-# ΞSort
+# ΞSort: Float Sorting Reimagined 🎲✨
 
-*A deterministic, integrity-checked external sorter for 64-bit floats.*  
-Handles **billions of values** on commodity hardware while preserving IEEE
-edge-cases ( ±0 , NaN, ±∞ ) and producing a **reproducible total order** across
-all platforms.
+*Stream billions of floating-point numbers with precision, safety, and deterministic grace.*
 
-[![PyPI](https://img.shields.io/pypi/v/xisort?logo=pypi)](https://pypi.org/project/xisort)
-[![CI](https://github.com/FarukAlpay/XiSort/actions/workflows/ci.yml/badge.svg)](https://github.com/FarukAlpay/XiSort/actions)
-![platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux-lightgrey)
-![license](https://img.shields.io/github/license/FarukAlpay/XiSort)
+[![License](https://img.shields.io/github/license/FarukAlpay/XiSort)](https://github.com/FarukAlpay/XiSort/blob/main/LICENSE)
+[![ORCID](https://img.shields.io/badge/ORCID-0009--0009--2207--6528-brightgreen?logo=orcid&logoColor=white)](https://orcid.org/0009-0009-2207-6528)
 
 ---
 
-## 🔑 Why ΞSort?
+## 🌌 What is ΞSort?
 
-| Conventional sort            | ΞSort                                          |
-|------------------------------|------------------------------------------------|
-| RAM-bound; crashes on > memory | Streams in fixed-size chunks; scratch-quota guard |
-| Undefined order for ±0 / NaN | Stable, IEEE-compliant total order             |
-| No tie-break reproducibility | Algebraic tie keys or deterministic PRNG       |
-| Silent data corruption risk  | Blake3 tag per chunk (optional)                |
+ΞSort (*“Xi-Sort”*) **redefines external sorting for floating-point data**—preserving all IEEE intricacies (*NaN, ±∞, ±0*) while guaranteeing reproducibility and cryptographic integrity. Born from the principles of **determinism, efficiency, and mathematical elegance**, ΞSort is ideal for sorting data far beyond RAM limits on standard hardware.
 
 ---
 
-## 🚀 Installation
+## 🚩 Why Use ΞSort?
+
+| 🐢 Ordinary Sorting             | 🚀 **ΞSort**                      |
+|:------------------------------:|:---------------------------------:|
+| Memory crashes on big data     | ✅ Stream with low-RAM footprints  |
+| Unstable NaN and ±0 order      | ✅ IEEE-safe total ordering        |
+| Unpredictable tie outcomes     | ✅ Algebraic tie-break/determinism |
+| Risk of silent corruption      | ✅ Blake3 cryptographic integrity  |
+
+---
+
+## 🎯 Quick Start: 1 Million Floats in Seconds
 
 ```bash
-pip install xisort          # Python ≥ 3.9
+pip install xisort
 
-No C-extensions; pure NumPy + mmap + Blake3.
+# Sort and verify instantly
+xisort --count 1_000_000 --progress --verify-sorted
+```
 
-⸻
+---
 
-⚡ Quick CLI demo
+## 🚧 Battle-Tested Performance
 
-xisort --count 1_000_000 --progress
+Tests below were run on an **Apple Silicon M4 Pro (Python ≥3.9):**
 
-# or with full reproducibility:
-xisort --seed 42 --require-deterministic --verify-sorted
+| 🧪 Scenario                | 🖥 Command                                 | 📌 Result                              |
+|---------------------------|-------------------------------------------|----------------------------------------|
+| Basic IEEE sanity         | `xisort --selftest`                       | signed-zero OK, χ² = 6.8 OK            |
+| Reproducibility (seeded)  | `xisort --seed 123 --require-deterministic`| 100% identical results across runs     |
+| Curved sorting metric     | `xisort --mode curved --epsilon 0.03`      | Stable clustering with ε-curve         |
+| Randomized ties           | `xisort --tie-break random --seed 42`      | Globally sorted; ties randomized       |
+| Integrity-free speed      | `xisort --no-integrity`                   | Blake3 disabled; ~20% faster           |
+| Quota safety test         | `xisort --max-gb 0.01`                    | Safe termination: MemoryError triggered|
+| Heavy lifting: 10M floats | `xisort --count 10_000_000 --progress`    | ~15.7s (M4 Pro SSD)                    |
 
-Common options:
+*Additional edge cases, huge-scale datasets, and high-stress memory tests are continuously expanding!*
 
-Flag	Meaning
---count N	Synthetic benchmark input (default = 1 000 000).
---progress	Print 5 % milestones (≥ 5 s interval).
---verify-sorted	Abort on first out-of-order value (single pass).
---nan-shuffle	Randomise NaNs/±Inf order inside the tail segment.
---max-gb X	Hard scratch quota (MemoryError if exceeded).
---mode curved	ε-curved metric for clustered data.
+---
 
-Run xisort --help for the full flag list.
+## 🔮 Elegant Python API
 
-⸻
-
-🔧 Python API
-
+```python
 from xisort import XiSort
 
-stream = (x for x in range(10_000_000))          # any iterable of float64
-sorter = XiSort(seed=123, nan_shuffle=True)
+# Infinite possibilities, finite memory
+data = (x for x in range(100_000_000))
+sorter = XiSort(seed=42, nan_shuffle=True)
 
-for v in sorter.stream_sort(stream):
-    ...   # consume sorted values lazily
+for v in sorter.stream_sort(data):
+    print(v)   # sorted stream, ready for your pipeline
+```
 
-The iterator starts emitting values long before the full dataset is read,
-enabling true pipeline streaming.
+---
 
-⸻
+## 📂 Project Structure
 
-📊 Rough performance (M4 Pro, single-thread)
-
-Data size	NumPy np.sort (in-RAM)	xisort --no-integrity (≥ 1 GiB scratch)
-1 M floats	0.07 s	0.25 s
-10 M floats	0.7 s	1.6 s (single-chunk)15.7 s (external merge)
-1 B floats	— (OOM)	≈ 32 min with 45 GiB scratch, 6 GiB RAM
-
-	Detailed benchmarks and I/O breakdown in the accompanying paper (paper/main.tex).
-
-⸻
-
-🏗 Repo structure
-
+```
 XiSort/
-├─ src/xisort/         ← library code
-│   ├─ core.py         (XiSort implementation)
-│   └─ cli.py          (argparse wrapper)
-├─ tests/              ← pytest suite
-├─ examples/           ← Jupyter notebooks & shell demos
-└─ paper/              ← arXiv LaTeX source
+├── src/      # Core sorting magic ✨
+│   ├── core.py
+│   └── cli.py
+├── tests/           # Robust pytest suite (🐣 Will be Added)
+├── examples/        # Interactive tutorials (🐣 Will be Added)
+└── paper/           # Academic rigor: arXiv LaTeX paper 📚 (🐣 Will be Added)
+```
 
-Install an editable dev environment:
+---
 
-git clone https://github.com/FarukAlpay/XiSort.git
-cd XiSort
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"        # pytest, ruff, mypy, mkdocs-material
-pytest -q
+## 📖 Citation & Academic Use
 
+ΞSort is documented and discussed in-depth in the forthcoming arXiv publication:
 
-
-⸻
-
-📰 Citing ΞSort
-
-If you use ΞSort in research, please cite the arXiv preprint (replace
-placeholder when paper ID is assigned):
-
+```bibtex
 @misc{alpay2025xisort,
   author       = {Faruk Alpay},
   title        = {ΞSort: Deterministic External Sorting with Integrity Guarantees},
@@ -113,16 +94,25 @@ placeholder when paper ID is assigned):
   year         = {2025},
   note         = {\url{https://github.com/FarukAlpay/XiSort}}
 }
+```
 
+---
 
+## 🔒 License
 
-⸻
+Apache 2.0 — freedom for both academia and commercial innovation.
 
-🛡 License
+---
 
-Apache 2.0 — free for commercial and academic use, with patent grant.
-See LICENSE for full text.
+## 🌠 Meet the Creator
 
-ΞSort is part of the broader Alpay Algebra ecosystem.
-For discussion, open an issue or ping @farukalpay.
+- 🎓 **Faruk Alpay** — [ORCID](https://orcid.org/0009-0009-2207-6528)
+- Part of the visionary **Alpay Algebra** ecosystem.
 
+---
+
+## 🚀 Next Up
+
+ΞSort evolves! Expect more heavy-duty stress-tests, cross-platform consistency checks, and advanced sorting metrics—fueling your data-driven dreams.
+
+**Happy sorting!** 🎉 
