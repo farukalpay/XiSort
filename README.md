@@ -116,3 +116,10 @@ Apache 2.0 — freedom for both academia and commercial innovation.
 ΞSort evolves! Expect more heavy-duty stress-tests, cross-platform consistency checks, and advanced sorting metrics—fueling your data-driven dreams.
 
 **Happy sorting!** 🎉 
+
+---
+
+## 📥 Archived Versions
+
+- **ΞSort v1.0** (`xisorter.py`) — archived on **17.05.2025**  
+[🔗 Arweave Permanent Link](https://gxw4ttcto2ydbtckbqmz7sz4aay6x4sbauztbo5arrgs2fxgynlq.arweave.net)
