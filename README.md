@@ -111,11 +111,12 @@ Apache 2.0 — freedom for both academia and commercial innovation.
 
 ---
 
-## 🚀 Next Up
+## 📓 Note  
 
-ΞSort evolves! Expect more heavy-duty stress-tests, cross-platform consistency checks, and advanced sorting metrics—fueling your data-driven dreams.
-
-**Happy sorting!** 🎉 
+The numbers quoted in the performance table come from an **internal, work-in-progress build** of ΞSort.  
+That build is not yet public, so you may not reproduce the *exact* figures until the optimized branch is released.  
+In the meantime you can review the full benchmark methodology and raw timing logs in our companion paper on arXiv.  
+When the production code is open-sourced we will re-run all tests and update the table accordingly.
 
 ---
 
