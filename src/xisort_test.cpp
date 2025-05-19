@@ -6,7 +6,7 @@
 
 /*
 How to run?
-g++ -std=c++17 -O3 -fopenmp xisort_cli.cpp -o xisort
+g++-14 -std=c++17 -O3 -fopenmp xisort_test.cpp -o xisort_tests
 (needs xisort.cpp and xisort_cli.cpp in same dir)
 
 ./xisort_tests           ← test harness (runs 0-3)
