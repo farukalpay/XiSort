@@ -145,7 +145,7 @@ int main(int argc, char** argv)
         /* B. call external CLI sorter ------------------------------ */
         auto t0 = std::chrono::steady_clock::now();
         std::string cmd =
-            "./xisort --external --parallel --mem-limit=1073741824 "
+            "./xisort_tests --external --parallel --mem-limit=1073741824 "
             + file_in + " " + file_out;
         int ret = std::system(cmd.c_str());
         double secs = elapsed_ms(t0) / 1000.0;
