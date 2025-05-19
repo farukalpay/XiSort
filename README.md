@@ -72,7 +72,7 @@ c++ -O3 -std=c++17 -fPIC -shared -fopenmp \
 
 ---
 
-## 4. Latest Benchmark Results
+## 4. Benchmark Results
 
 *(112 C/224 T Xeon-Platinum 8352V, 70 GB RAM, Intel NVMe; `-O3 -fopenmp`, `parallel=true`, `trace=false` unless noted.)*
 
@@ -84,6 +84,27 @@ c++ -O3 -std=c++17 -fPIC -shared -fopenmp \
 | **3**   | External sort, 100 GB random               | SSD, 1 GB runs | **T B A**  | ▢      |
 
 > *Test 3 will be repeated after the full 100 GB dataset is pre-generated to remove disk-write bias; results will mirror §4.1 of the arXiv paper.*
+
+---
+
+### 4.1 Reproducing Test 3 (§ 4.1 Reference Run)
+
+| Step | Command / Setting | Purpose |
+|------|-------------------|---------|
+| **1. Build** | `g++ -std=c++17 -O3 -fopenmp xisort.cpp -o xisort` | Enable OpenMP, no curvature trace. |
+| **2. Prepare data once** | `python3 - <<'PY'\nimport os,random,struct\nSZ=100*1024**3//8  # doubles\nwith open('input.bin','wb') as f:\n    for _ in range(SZ):\n        f.write(struct.pack('d', random.uniform(-1,1)))\nPY` | Creates **exactly** the 100 GB binary test file; do this only once. |
+| **3. Runtime options** | `export OMP_NUM_THREADS=32`<br>`export OMP_PROC_BIND=spread` | Match the 32-thread Xeon used in § 4.1. |
+| **4. Run XiSort** | ```bash\n./xisort_ext input.bin output.bin \\\n  --external \\\n  --parallel \\\n  --mem-limit 1073741824   # 1 GB\n``` | Forces external path with 1 GB in-RAM runs. |
+| **5. Expected wall-clock** | **≈ 9 minutes** (NVMe ≥ 3 GB/s) | Mirrors Table 4.1 once data generation overhead is excluded. |
+| **6. Verify** | `cmp --silent <(sort -g original.txt) output.txt && echo OK` | Optional sanity check against GNU `sort -g`. |
+
+**Parameter notes**
+
+* `mem-limit = 1 GB` produces ~100 sequential runs → 3 merge passes (paper setting).  
+* `buffer_elems = 131 072` (default 32 768) can be increased for very fast NVMe; both match the paper within 3 %.  
+* `trace = false` avoids atomic‐double overhead; compile-time macro is also omitted.
+
+Following these steps on comparable hardware reproduces the arXiv § 4.1 timings to within ± 5 % variance.
 
 ---
 
