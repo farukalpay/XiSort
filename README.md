@@ -130,7 +130,7 @@ xisort.xi_sort_py(a, external=False, parallel=True)
   author = {Faruk Alpay},
   title  = {ΞSort: Deterministic Sorting via IEEE-754 Total Ordering
             and Entropy Minimization},
-  howpublished = {arXiv:2505.12345},
+  howpublished = {arXiv:2505.11927},
   year   = {2025}
 }
 ```
