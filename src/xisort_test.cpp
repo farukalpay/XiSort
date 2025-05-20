@@ -1,18 +1,5 @@
 // AUTHOR: FARUK ALPAY
 // ORCID: 0009-0009-2207-6528
-/*  xisort_test.cpp  – End-to-end validation for XiSort v36.5
-    Builds on xisort.cpp (must be in same directory)
-*/
-
-/*
-How to run?
-g++-14 -std=c++17 -O3 -fopenmp xisort_test.cpp -o xisort_tests
-(needs xisort.cpp and xisort_cli.cpp in same dir)
-
-./xisort_tests           ← test harness (runs 0-3)
-./xisort_tests --small   ← CLI sorter invoked by Test-3
-*/
-
 #include <cmath>
 #include <random>
 #include <chrono>
