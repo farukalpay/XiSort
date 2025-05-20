@@ -82,7 +82,7 @@ The throughputs match within 2%: XiSort’s cost after Phase 1 becomes pure I/O,
 | **2. Generate input once** | `python tools/gen_random_bin.py 5GB`                                                                           | `python tools/gen_random_bin.py 100GB`                                                                              |
 | **3. Threads**             | `export OMP_NUM_THREADS=$(nproc)`                                                                              | `export OMP_NUM_THREADS=32`                                                                                         |
 | **4. Run**                 | `bash\n./xisort \\\n  --external --parallel \\\n  --mem-limit 1073741824 \\\n  input_5GB.bin output_5GB.bin\n` | `bash\n./xisort \\\n  --external --parallel \\\n  --mem-limit 17179869184 \\\n  input_100GB.bin output_100GB.bin\n` |
-| **5. Expected time**       | **≈ 50 s**                                                                                                     | **≈ 17 min**                                                                                                        |
+| **5. Expected time**       | **≈ 50 s**                                                                                                     | **≈ 1020 s (17 min)**                                                                                                        |
 | **6. Verify**              | `sha256sum` or GNU `sort -g` spot-check                                                                        | same                                                                                                                |
 
 ---
@@ -127,3 +127,4 @@ xisort.xi_sort_py(a, external=False, parallel=True)
 ## 7 · License
 
 Apache 2.0 — free for academic & commercial use.
+
