@@ -1,8 +1,11 @@
 # ΞSort – Deterministic IEEE-754 Float Sorting
 
+[![ORCID](https://img.shields.io/badge/ORCID-0009--0009--2207--6528-brightgreen?logo=orcid&logoColor=white)](https://orcid.org/0009-0009-2207-6528)
+
 *External and in-memory sorting of billions of floating-point values with full IEEE compliance, deterministic tie-breaking, and optional Φ(χ) curvature tracing.*
 
-[![ORCID](https://img.shields.io/badge/ORCID-0009--0009--2207--6528-brightgreen?logo=orcid&logoColor=white)](https://orcid.org/0009-0009-2207-6528)
+The complete formal exposition of ΞSort including the algorithmic specification, IEEE-754 order-preservation proofs, and full benchmarking protocol is permanently archived as a citable arXiv pre-print, fully prepared for formal peer review ([doi:10.48550/arXiv.2505.11927](https://doi.org/10.48550/arXiv.2505.11927)).
+
 
 ---
 
